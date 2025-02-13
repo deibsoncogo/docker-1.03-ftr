@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "tsup src --format esm",
+    "start": "node dist/server.mjs",
     "dev": "tsx watch --env-file .env src/server.ts"
   },
   "keywords": [],
@@ -11,6 +13,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "22.10.0",
+    "tsup": "^8.3.6",
     "tsx": "4.19.2",
     "typescript": "5.7.2"
   },
