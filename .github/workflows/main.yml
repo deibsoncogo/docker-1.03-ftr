@@ -26,3 +26,10 @@ jobs:
       - name: Login to AWS ECR
         id: login-to-aws-ecr
         uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push the image to AWS ECR
+        id: build-and-push-image
+        run: |
+          docker build -t docker-nlv3-ftr:v3 .
+          docker tag docker-nlv3-ftr:v3 403429280851.dkr.ecr.us-wast-2.amazonaws.com/rocketseat/docker-nlv3-ftr:v3
+          docker push 403429280851.dkr.ecr.us-wast-2.amazonaws.com/rocketseat/docker-nlv3-ftr:v3
