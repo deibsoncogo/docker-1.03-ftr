@@ -1,12 +1,9 @@
-name: widget-server pipe
+name: main
 
 on:
   push:
     branches:
       - "master"
-
-env:
-  ECR_REPOSITORY: "rocketseat/widget-server"
 
 jobs:
   Build:
