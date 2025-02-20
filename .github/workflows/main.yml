@@ -5,6 +5,9 @@ on:
     branches:
       - "master"
 
+env:
+  ECR_REPOSITORY: "rocketseat/widget-server"
+
 jobs:
   Build:
     name: Build
@@ -29,7 +32,10 @@ jobs:
 
       - name: Build and push the image to AWS ECR
         id: build-and-push-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-to-aws-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
         run: |
           docker build -t docker-nlv3-ftr:v3 .
-          docker tag docker-nlv3-ftr:v3 403429280851.dkr.ecr.us-wast-2.amazonaws.com/rocketseat/docker-nlv3-ftr:v3
-          docker push 403429280851.dkr.ecr.us-wast-2.amazonaws.com/rocketseat/docker-nlv3-ftr:v3
+          docker tag docker-nlv3-ftr:v3 $ECR_REGISTRY/$ECR_REPOSITORY:v3
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:v3
