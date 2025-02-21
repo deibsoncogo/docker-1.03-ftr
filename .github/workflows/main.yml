@@ -38,23 +38,29 @@ jobs:
         id: login-to-aws-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
+      - name: Set up Docker Buildx
+        id: set-up-docker-buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Generate tag
         id: generate-tag
         run: |
           SHA=$(echo $GITHUB_SHA | head -c7)
           echo "sha=$SHA" >> $GITHUB_OUTPUT
 
-      - name: Build and push the image to AWS ECR
+      - name: Build and export image
         uses: docker/build-push-action@v6
         with:
           context: .
           load: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             ${{ steps.login-to-aws-ecr.outputs.registry }}/${{ vars.ECR_REPOSITORY }}:test
 
       - name: Run Trivy scanner
         id: run-trivy-scanner
-        uses: aquasecurity/trivy@0.29.0
+        uses: aquasecurity/trivy-action@0.29.0
         with:
           image-ref: "${{ steps.login-to-aws-ecr.outputs.registry }}/${{ vars.ECR_REPOSITORY }}:test"
           format: "table"
@@ -67,5 +73,6 @@ jobs:
         with:
           context: .
           push: true
+          cache-from: type=gha
           tags: |
             ${{ steps.login-to-aws-ecr.outputs.registry }}/${{ vars.ECR_REPOSITORY }}:${{ steps.generate-tag.outputs.sha }}
