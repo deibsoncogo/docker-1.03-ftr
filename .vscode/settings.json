@@ -1,3 +1,11 @@
 {
-  "cSpell.words": ["aquasecurity", "buildx", "distroless", "github", "postgres", "trivy"]
+  "cSpell.words": [
+    "aquasecurity",
+    "buildx",
+    "distroless",
+    "Dockerfiles",
+    "github",
+    "postgres",
+    "trivy"
+  ]
 }
